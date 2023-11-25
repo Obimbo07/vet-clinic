@@ -15,18 +15,21 @@ SELECT * FROM animals WHERE name != 'Gabumon';
 SELECT * FROM animals WHERE weight_kg BETWEEN 10.4 AND 17.3;   // const user = userData ? JSON.parse(userData) : null
 
 
-ALTER TABLE animals ADD COLUMN species VARCHAR(100);
 
 BEGIN;
 UPDATE animals SET species = 'unspecified';
 SELECT * FROM animals;
 ROLLBACK;
+SELECT * FROM animals;
+
 
 BEGIN;
 UPDATE animals SET species = 'digimon' WHERE name LIKE '%mon';
 UPDATE animals SET species = 'pokemon' WHERE species IS NULL;
 SELECT * FROM animals;
 COMMIT;
+SELECT * FROM animals;
+
 
 BEGIN;
 DELETE FROM animals;
@@ -39,8 +42,9 @@ DELETE FROM animals WHERE date_of_birth > '2022-01-01';
 SAVEPOINT before_weight_update;
 UPDATE animals SET weight_kg = weight_kg * -1;
 ROLLBACK TO before_weight_update;
-UPDATE animals SET weight_kg = ABS(weight_kg) WHERE weight_kg < 0;
+UPDATE animals SET weight_kg = weight_kg * -1 WHERE weight_kg < 0;
 COMMIT;
+
 
 SELECT COUNT(*) AS total_animals
 FROM animals;
